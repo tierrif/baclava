@@ -1,0 +1,21 @@
+plugins {
+    id'application'
+    id'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+mainClassName = 'io.github.hotlava03.baclava.Main'
+
+version '1.0'
+def jdaVersion = '3.8.3_462'
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "net.dv8tion:JDA:3.8.3_462"
+}
+
+compileJava.options.encoding = 'UTF-8'
