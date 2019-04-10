@@ -2,7 +2,7 @@
 A discord bot that is made to annoy you, and sucks by default. It is written in Java, using the JDA library.
 
 
-
+\n
 # Docs
 Remember: This bot is not a release **yet**. 
   **Commands:**
