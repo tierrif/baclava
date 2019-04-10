@@ -6,6 +6,10 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class ImEvt extends ListenerAdapter{
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event){
@@ -41,7 +45,16 @@ public class ImEvt extends ListenerAdapter{
         }*/
         if((content.toLowerCase().contains("suck"))){
             MessageChannel channel = event.getChannel();
-            channel.sendMessage("ok").queue();
+            String[] randomizer = new String[4];
+            randomizer[0] = "1";
+            randomizer[1] = "2";
+            randomizer[2] = "3";
+            randomizer[3] = "4";
+            List<String> randomizing = Arrays.asList(randomizer);
+            Collections.shuffle(randomizing);
+            Object[] o = randomizing.toArray();
+            if(o[0] == "1")
+                channel.sendMessage("ok").queue();
         }
         
     }

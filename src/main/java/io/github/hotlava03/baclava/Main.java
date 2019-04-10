@@ -1,7 +1,11 @@
 package io.github.hotlava03.baclava;
 
+import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.github.hotlava03.baclava.commands.fun.ReactCmd;
-import io.github.hotlava03.baclava.commands.owner.Eval;
+import io.github.hotlava03.baclava.commands.owner.EvalCmd;
+import io.github.hotlava03.baclava.commands.owner.FixGameCmd;
+import io.github.hotlava03.baclava.commands.owner.Nashorn;
 import io.github.hotlava03.baclava.commands.owner.PowerOffCmd;
 import io.github.hotlava03.baclava.commands.util.*;
 import io.github.hotlava03.baclava.events.ImEvt;
@@ -14,22 +18,38 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
+import static io.github.hotlava03.baclava.misc.ClrScr.clrscr;
+
 public class Main extends ListenerAdapter {
+    public static String ownerID;
     public static JDA jda;
-    public static void main(String[] args) throws LoginException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException {
+        CommandClientBuilder client = new CommandClientBuilder();
+        EventWaiter waiter = new EventWaiter();
+        client.setPrefix(">>");
+        client.setOwnerId("362753440801095681");
+        client.useHelpBuilder(false);
+        client.setGame(Game.playing(">>help for help"));
+        client.addCommands(
+                new HelpCmd(),
+                new PingCmd(),
+                new InfoCmd(),
+                new ShuffleCmd(),
+                new FixGameCmd(),
+                new SayCmd(),
+                new SuggestCmd(),
+                new Nashorn(),
+                new EvalCmd(),
+                new ReactCmd(),
+                new PowerOffCmd()
+        );
         jda = new JDABuilder(AccountType.BOT)
                 .setToken("tokenHere")
+                .addEventListener(client.build())
                 .build();
-        jda.addEventListener(new HelpCmd());
         jda.addEventListener(new ImEvt());
-        jda.addEventListener(new PingCmd());
         jda.addEventListener(new ZeroEvt());
-        jda.addEventListener(new InfoCmd());
-        jda.addEventListener(new ReactCmd());
-        jda.addEventListener(new RandomCmd());
-        jda.addEventListener(new PowerOffCmd());
-        jda.addEventListener(new SuggestCmd());
-        jda.addEventListener(new Eval());
-        jda.getPresence().setGame(Game.playing(">>help for help"));
+        ownerID = "362753440801095681";
+        clrscr();
     }
 }

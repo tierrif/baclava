@@ -1,48 +1,47 @@
 package io.github.hotlava03.baclava.commands.fun;
 
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.exceptions.ErrorResponseException;
 
-public class ReactCmd extends ListenerAdapter{
+import java.awt.*;
+import java.util.Calendar;
+import java.util.List;
+
+public class ReactCmd extends Command {
+    public ReactCmd(){
+        this.name = "react";
+    }
+    private EmbedBuilder helpEmbed(CommandEvent event) {
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setTitle("**Help - React**");
+        embed.setDescription("**Command: ** `react`\n**Description:** *React to a specified message ID with a guild emote, specified by name.* **Notice:** The first found emote, in case of duplicate, will be the used one.\n**Syntax:** `>>react <messageID> <emoteName>`\n\n**If the syntax is not correct, no reactions will be done.**");
+        embed.setColor(Color.orange);
+        Calendar cal = Calendar.getInstance();
+        embed.setFooter(String.valueOf(cal.getTime()),event.getAuthor().getAvatarUrl());
+        return embed;
+    }
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event){
-        if (event.getAuthor().isBot()) {
+    public void execute(CommandEvent event){
+        String[] args = event.getArgs().split("\\s");
+        MessageChannel channel = event.getChannel();
+        if(args[0].equals("help") || args[0].equals("")) {
+            channel.sendMessage(helpEmbed(event).build()).queue();
             return;
         }
-        Message message = event.getMessage();
-        String content = message.getContentRaw();        
-        String prefix = ">>";
-        if(content.startsWith(prefix + "react")){
-            if(content.equals(prefix + "react")){
-                try{
-                    event.getChannel().sendMessage("Next time you can add emote IDs to a specific channel ID. More info if you run `>>react help`").queue();
-                    message.addReaction(event.getJDA().getGuildById("501535820247728138").getEmoteById("501812318158585856")).queue();
-                }catch(Exception e){
-                    System.out.println("WARNING: SOMETHING WENT WRONG:\t==> "+e);
-                    event.getChannel().sendMessage("**Something went wrong**").queue();
-                }
-                return;
-            }else if(content.equals(prefix + "react help") ^ content.equals(prefix + "react")){
-                MessageChannel channel = event.getChannel();
-                message.delete().queue();
-                channel.sendMessage("<@"+ event.getAuthor().getIdLong()+"> \n**Usage:** `>>react` **OR** `>>react <message ID to react> <emote ID>`\n\n\n**Trouble getting emote ID?**\n\n*Insert the emoji in your message.*\n*Send it.*\n*Edit your message with a backslash in the begining.*\n*Copy the numbers inside the full ID.*\n*Insert it in the second parameter of the command.*").queue();
-                return;
-            }
-            User author = message.getAuthor();
-            MessageChannel channel = event.getChannel();
-            String userName = author.getName();
+        try{
+            Message messageReact;
+            messageReact = event.getChannel().getMessageById(args[0]).complete();
+            List<Emote> list = event.getGuild().getEmotesByName(args[1],true);
             try{
-                String[] splitContent = content.split("\\s");
-                splitContent[0] = "";
-                Message messageReact;
-                messageReact = event.getChannel().getMessageById(splitContent[1]).complete();
-                messageReact.addReaction(event.getGuild().getEmoteById(splitContent[2])).queue();
-                message.delete().queue();
-            }catch(Exception e){
-                channel.sendMessage("**Invalid usage. Make sure the emote you are using is custom.**").queue();
+                messageReact.addReaction(list.get(0)).queue();
+            }catch(ErrorResponseException e){
+                channel.sendMessage("**Failed to find emote in this guild. Make sure the name is correct and is part of this server.**").queue();
             }
-            System.out.println("[ReactCommand] " + userName + " used the react command for this: "+content);
+        }catch(Exception e){
+            channel.sendMessage("**Failed to add emote: Make sure the emote you are using is custom and/or is valid and part of this guild.**").queue();
         }
     }
 }

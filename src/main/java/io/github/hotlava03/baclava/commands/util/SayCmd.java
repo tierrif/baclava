@@ -1,36 +1,31 @@
 package io.github.hotlava03.baclava.commands.util;
 
+import com.jagrosh.jdautilities.command.Command;
+import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class SayCmd extends ListenerAdapter {
+public class SayCmd extends Command {
+    public SayCmd(){
+        this.name = "say";
+    }
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) {
+    public void execute(CommandEvent event) {
+        MessageChannel channel = event.getChannel();
+        Message message = event.getMessage();
+        String[] args = event.getArgs().split("\\s");
+        if(args[0].equals("help")) {
+            channel.sendMessage("**Usage:** `>>say <text>`\n**Command Description:** \n```Says whatever you type in front of the command.```").queue();
             return;
         }
-        Message message = event.getMessage();
-        String content = message.getContentRaw();
-        String prefix = ">>";
-        if (content.equals(prefix + "say") || content.equals(prefix + "say help")) {
-            MessageChannel channel = event.getChannel();
-            channel.sendMessage("**Usage:** `" + prefix + "say <text>`\n**Command Description:** \n```Says whatever you type in front of the command.```").queue();
-        } else if (content.startsWith(prefix + "say ")) {
-            MessageChannel channel = event.getChannel();
-            try {
-                message.delete().queue();
-            } catch (Exception e) {
-                channel.sendMessage("**I do not have delete messages permissions.**").queue();
-            }
-            char[] splitContent = content.toCharArray();
-            for(int i = 0; i <= 5; i++)
-                splitContent[i] = ' ';
-            content = String.valueOf(splitContent);
-            content = content.replace("      ","");
-            channel.sendMessage(content).queue();
-            System.out.println("[SayCommand] " + event.getAuthor().getAsTag() + " used the say command for this: " + content);
+        try {
+            message.delete().queue();
+        } catch (Exception e) {
+            channel.sendMessage("**I do not have delete messages permissions.**").queue();
         }
+        String returnMessage = "";
+        for(String arg:args)
+            returnMessage += arg + " ";
+        channel.sendMessage(returnMessage).queue();
     }
 }
