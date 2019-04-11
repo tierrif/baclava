@@ -41,7 +41,8 @@ public class Main extends ListenerAdapter {
                 new Nashorn(),
                 new EvalCmd(),
                 new ReactCmd(),
-                new PowerOffCmd()
+                new PowerOffCmd(),
+                new UptimeCmd()
         );
         jda = new JDABuilder(AccountType.BOT)
                 .setToken("tokenHere")
