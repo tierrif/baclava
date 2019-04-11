@@ -9,8 +9,8 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import static io.github.hotlava03.baclava.commands.util.UptimeCmd.getUptime;
 
 public class InfoCmd extends Command {
     public InfoCmd(){
@@ -20,7 +20,7 @@ public class InfoCmd extends Command {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("**Baclava - Info**", "https://hotlava03.github.io");
         embed.setColor(Color.orange);
-        embed.setDescription("**Version**  1.0.1\n**Library**  JDA (Java Discord API)\n**Owner** Lava#0654");
+        embed.setDescription("**Version:**  1.0.1\n**Library:**  JDA (Java Discord API)\n**Uptime: **"+getUptime()+"\n**Owner:** Lava#0654");
         embed.setFooter("Copyright (C) 2019 HotLava03, all rights reserved.",myself.getAvatarUrl());
         return embed;
     }
