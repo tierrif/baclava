@@ -1,10 +1,7 @@
 # Baclava
 A discord bot that is made to annoy you, and sucks by default. It is written in Java, using the JDA library.
-
-
-
 # Docs
-<br>Remember: This bot is not a release **yet**. <br>
+Remember: This bot is not a release **yet**. <br>
   **Commands:**<br>
     -> `>>help` - Sends a help message in DMs.<br>
     -> `>>ping` - Sends an embed with the bot ping.<br>
@@ -16,5 +13,19 @@ A discord bot that is made to annoy you, and sucks by default. It is written in 
  **Events:**<br>
     -> Saying `baclava` in any sentence will make the bot ask what the hell do you want. Yes the bot gets annoyed easily.<br>
     -> Say just `0` or `zero` will meme your message with a cool reaction.<br>
-
-
+    <br>
+# Getting Started
+*It is not intended to use this bot as it is, the code inside it is intended to be useful **without any warranties**, but in case you want to try it out, this is what you should do:*<br>
+<br>
+ **1.** Create a new **GRADLE** project in the <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA IDE</a>.<br>
+ **2.** Download all the Java files.<br>
+ **3.** Keep the Java files in a similar format as the folders, to keep your work organized.<br>
+ **4.** Create new packages, in the same form as the folders are. While creating a package, add all the necessary java files, just as showed in the file configuration.<br>
+ **5.** When the whole file configuration is done, don't worry if you find errors. Open the build.gradle file and update it with the content inside the build.gradle file in the source code of this repository.<br>
+ **6.** Open the Main.java file. Update the token with a String, or directly. You can also add the token seperately through a file.<br>
+ **7.** Still in the Main.java file, update your Owner ID in the `OwnerId` string.<br>
+ **8.** Open the gradle tab > Tasks > shadow > shadowJar; this will generate a jar file for your bot. **[OPTIONAL]**<br>
+ **9.** Try to run the bot.<br><br>
+ 
+ # License
+  This software is licensed under the Apache License 2.0. More information <a href=https://github.com/HotLava03/Baclava/blob/master/LICENSE>here</a>.
