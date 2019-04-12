@@ -3,7 +3,6 @@ package io.github.hotlava03.baclava.commands.owner;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.github.hotlava03.baclava.eval.Engine;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -23,8 +22,6 @@ public class EvalCmd extends Command {
             event.getChannel().sendMessage("no eval for you").queue();
             return;
         }
-        final MessageBuilder builder = new MessageBuilder();
-
         // Execute code
         final Map<String, Object> shortcuts = new HashMap<>();
         Message message = event.getMessage();
@@ -56,8 +53,8 @@ public class EvalCmd extends Command {
             builder.append("\n").appendCodeBlock(result.getRight(), "");*/
 
         String out = result.toString();
-        out = out.replace("(","");
         out = out.replace(",,)","");
+        out = out.replace("(","");
         if(out.contains("ScriptException")) {
             try {
                 message.addReaction("\u274c").complete();
