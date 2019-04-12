@@ -10,6 +10,7 @@ import java.awt.*;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class ReactCmd extends Command {
     public ReactCmd(){
         this.name = "react";
@@ -24,8 +25,32 @@ public class ReactCmd extends Command {
         return embed;
     }
     @Override
-    public void execute(CommandEvent event){
+    public void execute(CommandEvent event) {
         String[] args = event.getArgs().split("\\s");
+        //TODO get this working. REMINDER: FEATURE COMING SOON
+        /* if(args[0].equals("disable")) {
+            try {
+                CommandDisabler.disableCmd("reactIsDisabled");
+                event.getChannel().sendMessage("Disabled `react`").queue();
+                return;
+            }catch(IOException e){
+                event.getChannel().sendMessage("**Could not disable command: `File not found.`").queue();
+            }
+        }else if(args[0].equals("enable")) {
+            try {
+                CommandDisabler.enableCmd("reactIsDisabled");
+                event.getChannel().sendMessage("Enabled `react`").queue();
+                return;
+            }catch(IOException e){
+                event.getChannel().sendMessage("**Could not enable command: `File not found.`").queue();
+            }
+        }
+        try{
+            if(!CommandDisabler.isEnabled("reactIsDisabled"))
+                return;
+        }catch(IOException e){
+            event.getChannel().sendMessage("**Could not verify if command is disabled or enabled: `File not found.`").queue();
+        }*/
         MessageChannel channel = event.getChannel();
         if(args[0].equals("help") || args[0].equals("")) {
             channel.sendMessage(helpEmbed(event).build()).queue();
