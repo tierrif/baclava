@@ -10,21 +10,20 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
-import static io.github.hotlava03.baclava.commands.util.UptimeCmd.getUptime;
 
 public class InfoCmd extends Command {
     public InfoCmd(){
         this.name = "info";
     }
-    protected EmbedBuilder createInfoEmbed(User myself){
+    private EmbedBuilder createInfoEmbed(User myself){
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("**Baclava - Info**", "https://hotlava03.github.io");
         embed.setColor(Color.orange);
-        embed.setDescription("**Version:**  1.0.1\n**Library:**  JDA (Java Discord API)\n**Uptime: **"+getUptime()+"\n**Owner:** Lava#0654");
+        embed.setDescription("**Version:**  (Unreleased)\n**Library:**  JDA (Java Discord API)\n**Uptime: **"+ UptimeCmd.getUptime()+"\n**Owner:** Lava#0654");
         embed.setFooter("Copyright (C) 2019 HotLava03, all rights reserved.",myself.getAvatarUrl());
         return embed;
     }
-    protected void execute(CommandEvent event){
+    public void execute(CommandEvent event){
         Message message = event.getMessage();
         String channelName = event.getChannel().getName();
         MessageChannel channel = event.getChannel();
