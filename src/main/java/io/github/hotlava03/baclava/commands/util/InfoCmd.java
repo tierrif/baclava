@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
+import static io.github.hotlava03.baclava.Main.version;
 
 public class InfoCmd extends Command {
     public InfoCmd(){
@@ -19,7 +20,7 @@ public class InfoCmd extends Command {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("**Baclava - Info**", "https://hotlava03.github.io");
         embed.setColor(Color.orange);
-        embed.setDescription("**Version:**  (Unreleased)\n**Library:**  JDA (Java Discord API)\n**Uptime: **"+ UptimeCmd.getUptime()+"\n**Owner:** Lava#0654");
+        embed.setDescription("**Version:**  "+version+"\n**Library:**  JDA (Java Discord API)\n**Uptime: **"+ UptimeCmd.getUptime()+"\n**Owner:** Lava#0654");
         embed.setFooter("Copyright (C) 2019 HotLava03, all rights reserved.",myself.getAvatarUrl());
         return embed;
     }
