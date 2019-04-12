@@ -18,12 +18,20 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import static io.github.hotlava03.baclava.misc.ClrScr.clrscr;
 
 public class Main extends ListenerAdapter {
     public static String ownerID;
+    public static String version;
     public static JDA jda;
-    public static void main(String[] args) throws LoginException, IllegalArgumentException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, IOException {
+        InputStream file = Main.class.getClassLoader().getResourceAsStream("config.properties");
+        Properties properties = new Properties();
+        properties.load(file);
         CommandClientBuilder client = new CommandClientBuilder();
         EventWaiter waiter = new EventWaiter();
         client.setPrefix(">>");
@@ -46,12 +54,13 @@ public class Main extends ListenerAdapter {
                 new GetPermsCmd()
         );
         jda = new JDABuilder(AccountType.BOT)
-                .setToken("tokenHere")
+                .setToken(properties.getProperty("token"))
                 .addEventListener(client.build())
                 .build();
         jda.addEventListener(new ImEvt());
         jda.addEventListener(new ZeroEvt());
         ownerID = "362753440801095681";
+        version = properties.getProperty("version");
         clrscr();
     }
 }
