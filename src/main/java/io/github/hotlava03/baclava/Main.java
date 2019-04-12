@@ -42,7 +42,8 @@ public class Main extends ListenerAdapter {
                 new EvalCmd(),
                 new ReactCmd(),
                 new PowerOffCmd(),
-                new UptimeCmd()
+                new UptimeCmd(),
+                new GetPermsCmd()
         );
         jda = new JDABuilder(AccountType.BOT)
                 .setToken("tokenHere")
