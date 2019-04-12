@@ -22,8 +22,8 @@ Remember: This bot is not a release **yet**. <br>
  **3.** Keep the Java files in a similar format as the folders, to keep your work organized.<br>
  **4.** Create new packages, in the same form as the folders are. While creating a package, add all the necessary java files, just as showed in the file configuration.<br>
  **5.** When the whole file configuration is done, don't worry if you find errors. Open the build.gradle file and update it with the content inside the build.gradle file in the source code of this repository.<br>
- **6.** Open the Main.java file. Update the token with a String, or directly. You can also add the token seperately through a file.<br>
- **7.** Still in the Main.java file, update your Owner ID in the `OwnerId` string.<br>
+ **6.** Create/download the config.properties file and put it in the resources folder, same level as java. Add your token in it.<br>
+ **7.** In the Main.java file, update your Owner ID in the `OwnerId` string.<br>
  **8.** Open the gradle tab > Tasks > shadow > shadowJar; this will generate a jar file for your bot. **[OPTIONAL]**<br>
  **9.** Try to run the bot.<br><br>
  
