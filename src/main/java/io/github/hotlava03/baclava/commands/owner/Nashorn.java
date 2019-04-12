@@ -9,7 +9,7 @@ import javax.script.ScriptException;
 
 public class Nashorn extends Command {
     private ScriptEngine engine;
-    public Nashorn() //ignore the hint, must leave it public
+    public Nashorn()
     {
         this.name = "nashorn";
         engine = new ScriptEngineManager().getEngineByName("nashorn");
@@ -58,7 +58,6 @@ public class Nashorn extends Command {
                             event.getArgs() +
                             "}" +
                             "})();");
-            //event.reply( out == null ? event.getMessage().addReaction("\u2705").queue() : out.toString());
             if(out == null) {
                 event.getMessage().addReaction("\u2705").queue();
             }else{
@@ -67,7 +66,6 @@ public class Nashorn extends Command {
         }
         catch (Exception e1)
         {
-            //event.getChannel().sendMessage(e1.getMessage()).queue();
             event.getMessage().addReaction("\u274c").queue();
         }
     }
