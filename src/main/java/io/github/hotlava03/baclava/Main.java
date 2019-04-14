@@ -3,6 +3,9 @@ package io.github.hotlava03.baclava;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.github.hotlava03.baclava.commands.fun.ReactCmd;
+import io.github.hotlava03.baclava.commands.games.EightBall;
+import io.github.hotlava03.baclava.commands.games.Unscramble;
+import io.github.hotlava03.baclava.commands.imageediting.AvatarCmd;
 import io.github.hotlava03.baclava.commands.owner.EvalCmd;
 import io.github.hotlava03.baclava.commands.owner.FixGameCmd;
 import io.github.hotlava03.baclava.commands.owner.Nashorn;
@@ -51,11 +54,15 @@ public class Main extends ListenerAdapter {
                 new ReactCmd(),
                 new PowerOffCmd(),
                 new UptimeCmd(),
-                new GetPermsCmd()
+                new GetPermsCmd(),
+                new EightBall(),
+                new AvatarCmd(),
+                new Unscramble(waiter)
         );
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(properties.getProperty("token"))
                 .addEventListener(client.build())
+                .addEventListener(waiter)
                 .build();
         jda.addEventListener(new ImEvt());
         jda.addEventListener(new ZeroEvt());
