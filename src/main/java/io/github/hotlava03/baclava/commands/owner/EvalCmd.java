@@ -59,15 +59,16 @@ public class EvalCmd extends Command {
             try {
                 message.addReaction("\u274c").complete();
             }catch(Exception e){
-                channel.sendMessage("\u274c - (Eval) No reaction perms, but the eval was executed **unsuccessfully**.").queue();
+                channel.sendMessage("\u274c - (Eval) No reaction/message history perms, but the eval was executed **unsuccessfully**.\n[Debug]:\n```"+e+"```").queue();
             }
         }else if(!(out.equals("null")))
             channel.sendMessage("```"+out+"```").queue();
         else{
             try{
                 message.addReaction("\u2705").complete();
+                channel.sendMessage("[Debug]:\\n```\"+e+\"```\"").queue();
             }catch(Exception e){
-                channel.sendMessage("\u2705 - (Eval) No reaction perms, but the eval was executed **successfully**.").queue();
+                channel.sendMessage("\u2705 - (Eval) No reaction/message history perms, but the eval was executed **successfully**.\n[Debug]:\n```"+e+"```").queue();
             }
         }
 

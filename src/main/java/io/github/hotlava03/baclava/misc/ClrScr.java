@@ -15,5 +15,7 @@ public class ClrScr {
             System.out.println("\n");
         }
         System.out.println("Bot is loaded.\n");
+        for(int i = 0; i <=12; i++)
+            System.out.println("\n");
     }
 }

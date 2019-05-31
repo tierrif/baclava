@@ -2,7 +2,9 @@ package io.github.hotlava03.baclava;
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import io.github.hotlava03.baclava.commands.fun.ArtCmd;
 import io.github.hotlava03.baclava.commands.fun.ReactCmd;
+import io.github.hotlava03.baclava.commands.fun.currency.GiveBLCmd;
 import io.github.hotlava03.baclava.commands.games.EightBall;
 import io.github.hotlava03.baclava.commands.games.Unscramble;
 import io.github.hotlava03.baclava.commands.imageediting.AvatarCmd;
@@ -13,6 +15,8 @@ import io.github.hotlava03.baclava.commands.owner.PowerOffCmd;
 import io.github.hotlava03.baclava.commands.util.*;
 import io.github.hotlava03.baclava.events.ImEvt;
 import io.github.hotlava03.baclava.events.ZeroEvt;
+import io.github.hotlava03.baclava.misc.ClrScr;
+import io.github.hotlava03.baclava.util.Database;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -25,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static io.github.hotlava03.baclava.misc.ClrScr.clrscr;
 
 public class Main extends ListenerAdapter {
     public static String ownerID;
@@ -35,6 +38,8 @@ public class Main extends ListenerAdapter {
         InputStream file = Main.class.getClassLoader().getResourceAsStream("config.properties");
         Properties properties = new Properties();
         properties.load(file);
+        Database db = new Database(properties.getProperty("host"),properties.getProperty("pwd"),properties.getProperty("usr"));
+        if(db.getConnection() == null) System.out.println("[Database] An error has occured: Could not find any connections with the database.");
         CommandClientBuilder client = new CommandClientBuilder();
         EventWaiter waiter = new EventWaiter();
         client.setPrefix(">>");
@@ -57,7 +62,9 @@ public class Main extends ListenerAdapter {
                 new GetPermsCmd(),
                 new EightBall(),
                 new AvatarCmd(),
-                new Unscramble(waiter)
+                new Unscramble(waiter),
+                new ArtCmd(),
+                new GiveBLCmd()
         );
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(properties.getProperty("token"))
@@ -68,6 +75,11 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new ZeroEvt());
         ownerID = "362753440801095681";
         version = properties.getProperty("version");
-        clrscr();
+        ClrScr.clrscr();
     }
+    //TODO Main todo area:
+    /*
+    TODO => Add custom Command framework so that users can edit prefix by guild using database.
+    TODO => Add fun currency using database with member ID as primary key. [doing]
+     */
 }
