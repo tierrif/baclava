@@ -40,24 +40,25 @@ public class Baclava {
     private static Properties properties;
     private static String prefix;
     private static RegisteredCommands registered;
-    private static final String VERSION = "2.0.0-CANARY";
+    private static final String VERSION = "2.0.1-CANARY.1";
 
     public static String HELP_MESSAGE;
     public static long OWNER_ID;
+    //public static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder().build();
 
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
 
         properties = new Properties();
         properties.load(Objects.requireNonNull(Baclava.class.getClassLoader().getResourceAsStream("config.properties")));
-        logger = Logger.getLogger(Baclava.class.getName());
+        logger = Logger.getLogger(Baclava.class.getName(),null);
         prefix = properties.getProperty("prefix");
         registered = new RegisteredCommands(Baclava.logger);
 
         // Command category mass-registering
-        BasicCommands.registerAll();
-        OwnerCommands.registerAll();
-        UtilCommands.registerAll();
-        FunCommands.registerAll();
+        BasicCommands.INSTANCE.registerAll();
+        OwnerCommands.INSTANCE.registerAll();
+        UtilCommands.INSTANCE.registerAll();
+        FunCommands.INSTANCE.registerAll();
 
         // Generate the help message, let's not slow down the bot on every help command ran
         generateHelp();

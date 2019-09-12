@@ -67,6 +67,10 @@ public class RegisteredCommands {
         this.commands.add(command);
     }
 
+    public boolean unregisterCommand(Command command) {
+        return this.commands.remove(command);
+    }
+
     /**
      * @param name The command's primary name or alias to verify.
      * @return The command if it exists or null if not.

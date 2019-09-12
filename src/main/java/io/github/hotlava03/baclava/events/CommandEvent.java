@@ -19,8 +19,9 @@ package io.github.hotlava03.baclava.events;
 import io.github.hotlava03.baclava.Baclava;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageUpdateEvent;
+
 /**
  * <p>
  *     The event given as argument onCommand. Triggered by either
@@ -33,8 +34,8 @@ import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
  */
 public class CommandEvent {
 
-    private MessageReceivedEvent receivedEvent;
-    private MessageUpdateEvent updateEvent;
+    private GuildMessageReceivedEvent receivedEvent;
+    private GuildMessageUpdateEvent updateEvent;
     private User user;
     private Member member;
     private Guild guild;
@@ -55,7 +56,7 @@ public class CommandEvent {
      *
      * @param e MessageReceivedEvent that triggered the command to run.
      */
-    public CommandEvent(MessageReceivedEvent e) {
+    public CommandEvent(GuildMessageReceivedEvent e) {
         this.receivedEvent = e;
         this.user = e.getAuthor();
         this.member = e.getMember();
@@ -81,7 +82,7 @@ public class CommandEvent {
      *
      * @param e MessageUpdateEvent (edit event) that triggered the command to run.
      */
-    public CommandEvent(MessageUpdateEvent e) {
+    public CommandEvent(GuildMessageUpdateEvent e) {
         this.updateEvent = e;
         this.user = e.getAuthor();
         this.member = e.getMember();
@@ -154,7 +155,7 @@ public class CommandEvent {
      * </p>
      * @return The message received event triggered by the sent command initially.
      */
-    public MessageReceivedEvent getReceivedEvent() {
+    public GuildMessageReceivedEvent getReceivedEvent() {
         return this.receivedEvent;
     }
 
@@ -165,7 +166,7 @@ public class CommandEvent {
      * </p>
      * @return The message edit event triggered in case the command comes from an edited message.
      */
-    public MessageUpdateEvent getEditEvent() {
+    public GuildMessageUpdateEvent getEditEvent() {
         return this.updateEvent;
     }
 

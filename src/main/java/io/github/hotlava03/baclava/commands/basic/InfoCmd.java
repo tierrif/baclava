@@ -23,8 +23,6 @@ import io.github.hotlava03.baclava.events.CommandEvent;
 import io.github.hotlava03.baclava.util.MiscUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-import java.time.Instant;
-
 public class InfoCmd extends Command {
 
     public InfoCmd() {
@@ -40,7 +38,7 @@ public class InfoCmd extends Command {
         e.replyEmbed(new EmbedBuilder()
                 .setAuthor(e.getMember().getEffectiveName(), null, e.getUser().getAvatarUrl())
                 .setTitle("Baclava Information")
-                .addField("Version", "2.0.0-CANARY", true)
+                .addField("Version", "2.0.1-CANARY.1", true)
                 .addField("Library", "JDA", true)
                 .addField("Author", "HotLava03", true)
                 .addField("Guilds", String.valueOf(e.getJDA().getGuilds().size()), true)

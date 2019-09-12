@@ -47,6 +47,7 @@ public class EvalComponent {
             "io.github.hotlava03.baclava.events",
             "io.github.hotlava03.baclava.listeners",
             "io.github.hotlava03.baclava.util",
+            "io.github.hotlava03.baclava",
             "net.dv8tion.jda.core.entities.impl",
             "net.dv8tion.jda.core.managers",
             "net.dv8tion.jda.core.entities",

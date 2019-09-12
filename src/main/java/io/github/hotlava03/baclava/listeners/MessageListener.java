@@ -17,11 +17,12 @@
 package io.github.hotlava03.baclava.listeners;
 
 import io.github.hotlava03.baclava.Baclava;
+import io.github.hotlava03.baclava.commands.Category;
 import io.github.hotlava03.baclava.commands.Command;
 import io.github.hotlava03.baclava.events.CommandEvent;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public class MessageListener extends ListenerAdapter {
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent e) {
+    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
 
         if (isNotCommand(e.getMessage().getContentRaw()))
             return;
@@ -40,6 +41,13 @@ public class MessageListener extends ListenerAdapter {
         final Command command = Baclava.getRegisteredCommands().getCommandByName(label);
 
         if (command == null)
+            return;
+
+        if (e.getMember() == null)
+            return;
+
+        // If it's a owner command and they aren't the owner
+        if (command.getCategory() == Category.OWNER && e.getAuthor().getIdLong() != Baclava.OWNER_ID)
             return;
 
         if (!e.getMember().hasPermission(command.getRequiredPermissions())) {
@@ -75,7 +83,8 @@ public class MessageListener extends ListenerAdapter {
         }
     }
 
-    public void onMessageUpdate(MessageUpdateEvent e) {
+    @Override
+    public void onGuildMessageUpdate(GuildMessageUpdateEvent e) {
 
         if (isNotCommand(e.getMessage().getContentRaw()))
             return;
@@ -92,6 +101,13 @@ public class MessageListener extends ListenerAdapter {
         final Command command = Baclava.getRegisteredCommands().getCommandByName(label);
 
         if (command == null)
+            return;
+
+        if (e.getMember() == null)
+            return;
+
+        // If it's a owner command and they aren't the owner
+        if (command.getCategory() == Category.OWNER && e.getAuthor().getIdLong() != Baclava.OWNER_ID)
             return;
 
         if (!e.getMember().hasPermission(command.getRequiredPermissions())) {
@@ -125,13 +141,13 @@ public class MessageListener extends ListenerAdapter {
         return !args.startsWith(Baclava.getPrefix());
     }
 
-    private void executeCommand(Command command, MessageReceivedEvent msgEvent) {
+    private void executeCommand(Command command, GuildMessageReceivedEvent msgEvent) {
 
         CommandEvent event = new CommandEvent(msgEvent);
         command.onCommand(event);
     }
 
-    private void executeCommand(Command command, MessageUpdateEvent msgEvent) {
+    private void executeCommand(Command command, GuildMessageUpdateEvent msgEvent) {
 
         CommandEvent event = new CommandEvent(msgEvent);
         command.onCommand(event);
