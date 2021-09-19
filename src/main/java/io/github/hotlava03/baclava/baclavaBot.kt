@@ -2,20 +2,23 @@
 
 package io.github.hotlava03.baclava
 
-import io.github.hotlava03.baclava.bot.BaclavaEventManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.events.ReadyEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.requests.GatewayIntent
 
 class BaclavaBot
 
-fun startBot(token: String, onReady: (jda: JDA) -> Unit) {
-    GlobalScope.launch {
-        onReady(
-            JDABuilder.createDefault(token)
-                .setEventManager(BaclavaEventManager())
-                .build()
-        )
-    }
+lateinit var botId: String
+
+fun startBot(token: String, onReady: (ready: ReadyEvent) -> Unit) {
+    JDABuilder.create(token, GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
+        .addEventListeners(
+            object : ListenerAdapter() {
+                override fun onReady(event: ReadyEvent) {
+                    onReady(event)
+                }
+            },
+            *eventListeners().toTypedArray(), // Spread list for it to work in a vararg.
+        ).build()
 }

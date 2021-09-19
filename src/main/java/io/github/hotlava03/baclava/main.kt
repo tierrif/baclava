@@ -8,7 +8,9 @@
  */
 package io.github.hotlava03.baclava
 
+import io.github.hotlava03.baclava.bot.listeners.ChatListener
 import io.github.hotlava03.baclava.dashboard.DashboardApplication
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.apache.logging.log4j.LogManager
 import org.springframework.boot.runApplication
 
@@ -24,6 +26,11 @@ fun main(args: Array<String>) {
     // Start the bot.
     startBot(System.getenv("TOKEN")) {
         // Done.
+        botId = it.jda.selfUser.id
         logger.info("JDA is ready.")
     }
 }
+
+fun eventListeners(): List<ListenerAdapter> = listOf(
+    ChatListener()
+)

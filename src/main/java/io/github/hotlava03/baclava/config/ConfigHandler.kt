@@ -12,6 +12,6 @@ object ConfigHandler {
     }
 
     private fun retrieveConfig(): Config {
-        return gson.fromJson<Config>(FileReader("config.json"), Config::class.java)
+        return gson.fromJson(FileReader("config.json"), Config::class.java)
     }
 }

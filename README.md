@@ -11,13 +11,17 @@ Baclava is written with [JDA](https://github.com/DV8FromTheWorld/JDA), in [Kotli
 Simply clone this repository, run `./gradlew shadowJar` and you'll have a compiled jar file in `build/libs`.
 
 ## Running
-You will need a `config.json` file in the same directory level as the jar file you are going to run. It should look like this:
+You will need a `config.json` file in the same directory level as the jar file you are going to run. Here's an example:
 
 ```json
 {
-  "baseUri": "http(s)://localhost:port/"
+  "baseUri": "http(s)://localhost:port/",
+  "prefix": ">>",
+  "conversationTimeout": 600000
 }
 ```
+
+`conversationTimeout` is the timeout in milliseconds (default is 10 minutes) to expire a conversation's context. This means that when 10 minutes pass, the context of previous conversations will be reset.
 
 **Important**: The `baseUrl` must include a `/` in the end. Make sure you have the correct protocol and port.
 
