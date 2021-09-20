@@ -1,6 +1,8 @@
 package io.github.hotlava03.baclava.bot.listeners
 
 import io.github.hotlava03.baclava.bot.ai.cleverbot
+import io.github.hotlava03.baclava.bot.commands.CommandEvent
+import io.github.hotlava03.baclava.bot.commands.CommandHandler
 import io.github.hotlava03.baclava.botId
 import io.github.hotlava03.baclava.config.ConfigHandler
 import io.github.hotlava03.baclava.util.simplifyMessage
@@ -8,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
@@ -20,6 +23,7 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
         get() = Dispatchers.Default + job
 
     private lateinit var mentionRegex: Regex
+    private val commandHandler = CommandHandler()
 
     override fun onGenericMessage(e: GenericMessageEvent) {
         e.channel.retrieveMessageById(e.messageId).queue(::checkMessage)
@@ -30,6 +34,7 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
 
         // Handle AI.
         if (message.contentRaw.contains(mentionRegex)) {
+            message.channel.sendTyping().queue()
             launch {
                 val response = cleverbot(
                     message.contentRaw.replace(mentionRegex, "").substring(1),
@@ -45,7 +50,28 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
         val prefix = ConfigHandler.config.prefix
         if (!message.contentRaw.startsWith(prefix)) return
 
-        val command = message.contentRaw.substring(prefix.length)
-        if (command.startsWith(" ")) return
+        val splitInput = message.contentRaw.substring(prefix.length).split("\\s+".toRegex())
+        val commandName = splitInput[0]
+        val args = splitInput.toTypedArray().copyOfRange(1, splitInput.size)
+        if (commandName.startsWith(" ")) return
+
+        println(commandName)
+        val command = commandHandler[commandName]
+        if (command === null) return
+        else command.onCommand(CommandEvent(
+            message.jda,
+            message.channel,
+            message.channelType,
+            if (message.isFromGuild) message.guild else null,
+            message.isFromGuild,
+            message.id,
+            message.idLong,
+            if (message.channelType == ChannelType.PRIVATE) message.privateChannel else null,
+            if (message.channelType == ChannelType.TEXT) message.textChannel else null,
+            message,
+            message.author,
+            message.member,
+            args
+        ))
     }
 }

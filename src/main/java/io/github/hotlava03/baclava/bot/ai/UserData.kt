@@ -21,4 +21,9 @@ internal class UserData(private val timeout: Long) {
 
         return dataMap[userId] ?: listOf()
     }
+
+    fun pushContext(userId: String, message: String) {
+        dataMap[userId] = listOf(*((dataMap[userId] ?: listOf()).toTypedArray()), message)
+        println(dataMap)
+    }
 }

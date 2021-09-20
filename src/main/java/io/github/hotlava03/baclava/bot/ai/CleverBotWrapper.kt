@@ -21,7 +21,7 @@ private const val USER_AGENT =
  * This code is a migration from the original cleverbot-free package for node.js.
  * The original idea can be found here: https://github.com/IntriguingTiles/cleverbot-free/blob/master/index.js.
  */
-internal class CleverBotWrapper : CoroutineScope {
+internal class CleverBotWrapper(private val userData: UserData) : CoroutineScope {
     // List of cookies.
     private lateinit var cookies: List<Cookie>
     private lateinit var cbsid: String
@@ -29,7 +29,7 @@ internal class CleverBotWrapper : CoroutineScope {
     // Initialize Coroutine context.
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+        get() = Dispatchers.Default + job
 
     // Initialize HTTP client and install timeout.
     private val client = HttpClient(CIO) {
@@ -42,7 +42,7 @@ internal class CleverBotWrapper : CoroutineScope {
      *
      * @return CleverBot's response or null if an error has occurred.
      */
-    suspend fun makeRequest(stimulus: String, context: List<String> = listOf()): String? {
+    suspend fun makeRequest(stimulus: String, userId: String, context: List<String> = listOf()): String? {
         // Verify if cookies are initialized.
         if (!::cookies.isInitialized) {
             // Retrieve the XVIS cookie which is necessary to perform requests.
@@ -109,7 +109,9 @@ internal class CleverBotWrapper : CoroutineScope {
                 }
 
                 cbsid = res.split("\r")[1]
-                return URLDecoder.decode(res.split("\r")[0], Charset.defaultCharset())
+                val response = URLDecoder.decode(res.split("\r")[0], Charset.defaultCharset())
+                userData.pushContext(userId, response)
+                return response
             } catch (e: Exception) {
                 // Retry after a second.
                 delay(1000)
