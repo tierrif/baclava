@@ -2,7 +2,6 @@ package io.github.hotlava03.baclava.bot.commands.utility
 
 import io.github.hotlava03.baclava.bot.commands.Command
 import io.github.hotlava03.baclava.bot.commands.CommandEvent
-import okhttp3.internal.toHexString
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -26,30 +25,31 @@ class Color : Command() {
 
     override fun onCommand(e: CommandEvent) {
         val input = e.args[0]
-        lateinit var color: AwtColor
-        if (!input.startsWith("#")) {
+        val color: AwtColor = if (!input.startsWith("#")) {
             val rgb = input.split(",")
             if (rgb.size != 3) return e.reply(INVALID_COLOR_MSG)
 
             val (red, green, blue) = rgb
-            color = AwtColor(red.toInt(), green.toInt(), blue.toInt())
+            AwtColor(red.toInt(), green.toInt(), blue.toInt())
         } else {
             if (input.length != 7) return e.reply(INVALID_COLOR_MSG)
-            color = AwtColor.decode(input)
+            AwtColor.decode(input)
         }
 
+        val squareSize = 100
+
         // Create image with 2D graphics.
-        val bufferedImage = BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB)
+        val bufferedImage = BufferedImage(squareSize, squareSize, BufferedImage.TYPE_INT_RGB)
         val g2d = bufferedImage.createGraphics()
         g2d.color = color
-        g2d.fillRect(0, 0, 100, 100)
+        g2d.fillRect(0, 0, squareSize, squareSize)
         g2d.dispose()
 
         // Convert to byte array.
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "jpg", out)
 
-        e.channel.sendMessage("**HEX:** #${color.rgb.toHexString().substring(2)} - " +
+        e.channel.sendMessage("**HEX:** #${Integer.toHexString(color.rgb).substring(2)} - " +
                 "**RGB**: ${color.red},${color.green},${color.blue}")
             .addFile(out.toByteArray(), "color.jpg")
             .queue()

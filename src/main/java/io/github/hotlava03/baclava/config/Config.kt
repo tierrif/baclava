@@ -6,5 +6,7 @@ class Config(
     val conversationTimeout: Long,
     val baclavaColor: String,
     val owners: Array<String>,
+    val clientSecret: String,
+    val clientId: String,
 )
 

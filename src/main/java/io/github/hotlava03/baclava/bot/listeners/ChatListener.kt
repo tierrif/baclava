@@ -29,9 +29,7 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
     private val commandHandler = CommandHandler()
 
     override fun onGenericMessage(e: GenericMessageEvent) {
-        try {
-            e.channel.retrieveMessageById(e.messageId).queue(::checkMessage)
-        } catch (ex: ContextException) {
+        e.channel.retrieveMessageById(e.messageId).queue(::checkMessage) {
             getLogger().warn("Error whilst retrieving message ID ${e.messageId}.")
         }
     }
@@ -66,26 +64,27 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
         if (command === null) return
 
         if (command.category == Command.Category.OWNER
-            && !ConfigHandler.config.owners.contains(message.author.id)) {
+            && !ConfigHandler.config.owners.contains(message.author.id)
+        ) {
             return message.channel.sendMessage("**Aww look, you have achieved comedy. No.**").queue()
         } else if (args.size < command.minArgs) {
             return message.channel.sendMessage("**Usage:** ${command.usage}").queue()
-        }
-
-        else command.onCommand(CommandEvent(
-            message.jda,
-            message.channel,
-            message.channelType,
-            if (message.isFromGuild) message.guild else null,
-            message.isFromGuild,
-            message.id,
-            message.idLong,
-            if (message.channelType == ChannelType.PRIVATE) message.privateChannel else null,
-            if (message.channelType == ChannelType.TEXT) message.textChannel else null,
-            message,
-            message.author,
-            message.member,
-            args
-        ))
+        } else command.onCommand(
+            CommandEvent(
+                message.jda,
+                message.channel,
+                message.channelType,
+                if (message.isFromGuild) message.guild else null,
+                message.isFromGuild,
+                message.id,
+                message.idLong,
+                if (message.channelType == ChannelType.PRIVATE) message.privateChannel else null,
+                if (message.channelType == ChannelType.TEXT) message.textChannel else null,
+                message,
+                message.author,
+                message.member,
+                args
+            )
+        )
     }
 }
