@@ -1,15 +1,13 @@
 package io.github.hotlava03.baclava.bot.commands
 
-import io.github.hotlava03.baclava.bot.commands.basic.Help
-import io.github.hotlava03.baclava.bot.commands.owner.Eval
+import io.github.hotlava03.baclava.bot.commands.basic.*
+import io.github.hotlava03.baclava.bot.commands.owner.*
 
 class CommandHandler {
     private val commands: MutableMap<String, Command> = mutableMapOf(
         "eval" to Eval(this),
         "help" to Help(this),
-        "test" to Eval(this),
-        "test2" to Eval(this),
-        "test3" to Help(this),
+        "ping" to Ping(),
     )
 
     operator fun get(name: String): Command? {

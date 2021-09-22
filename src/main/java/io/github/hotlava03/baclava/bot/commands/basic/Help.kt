@@ -42,6 +42,7 @@ class Help(private val commandHandler: CommandHandler) : Command() {
                 .setTitle("Baclava Help")
                 .setDescription(helpMessage)
                 .setTimestamp(Instant.now())
+                .setFooter("Use >>help [command] for individual usage.")
                 .setColor(Color.decode(ConfigHandler.config.baclavaColor))
                 .build()
 
@@ -55,6 +56,7 @@ class Help(private val commandHandler: CommandHandler) : Command() {
             var previousCategory: Category? = null
             commandHandler.getAll().sortedBy { it.category }.forEach {
                 if (previousCategory != it.category) {
+                    if (it.category == Category.OWNER) return@forEach
                     appendLine("\n**${it.category.format()} commands**")
                     previousCategory = it.category
                 }
