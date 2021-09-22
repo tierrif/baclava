@@ -21,6 +21,7 @@ class Eval(private val commandHandler: CommandHandler) : Command(), CoroutineSco
         description = "Evaluate Kotlin code."
         aliases = arrayOf("keval")
         usage = "<kotlin code>"
+        minArgs = 1
     }
 
     override fun onCommand(e: CommandEvent) {

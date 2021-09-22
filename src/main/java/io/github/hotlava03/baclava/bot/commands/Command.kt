@@ -20,13 +20,16 @@ abstract class Command {
             return if (field === null) ConfigHandler.config.prefix + name
             else field
         }
+    var minArgs: Int = 0
 
     // Categories.
     enum class Category {
         BASIC,
         FUN,
         UTILITY,
-        OWNER,
+        OWNER,;
+
+        fun format() = toString()[0] + toString().lowercase().substring(1)
     }
 
     abstract fun onCommand(e: CommandEvent)

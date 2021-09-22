@@ -1,10 +1,12 @@
 package io.github.hotlava03.baclava.bot.listeners
 
 import io.github.hotlava03.baclava.bot.ai.cleverbot
+import io.github.hotlava03.baclava.bot.commands.Command
 import io.github.hotlava03.baclava.bot.commands.CommandEvent
 import io.github.hotlava03.baclava.bot.commands.CommandHandler
 import io.github.hotlava03.baclava.botId
 import io.github.hotlava03.baclava.config.ConfigHandler
+import io.github.hotlava03.baclava.dashboard.functions.getLogger
 import io.github.hotlava03.baclava.util.simplifyMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +15,7 @@ import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
+import net.dv8tion.jda.api.exceptions.ContextException
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import kotlin.coroutines.CoroutineContext
 
@@ -26,7 +29,11 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
     private val commandHandler = CommandHandler()
 
     override fun onGenericMessage(e: GenericMessageEvent) {
-        e.channel.retrieveMessageById(e.messageId).queue(::checkMessage)
+        try {
+            e.channel.retrieveMessageById(e.messageId).queue(::checkMessage)
+        } catch (ex: ContextException) {
+            getLogger().warn("Error whilst retrieving message ID ${e.messageId}.")
+        }
     }
 
     private fun checkMessage(message: Message) {
@@ -55,9 +62,16 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
         val args = splitInput.toTypedArray().copyOfRange(1, splitInput.size)
         if (commandName.startsWith(" ")) return
 
-        println(commandName)
         val command = commandHandler[commandName]
         if (command === null) return
+
+        if (command.category == Command.Category.OWNER
+            && !ConfigHandler.config.owners.contains(message.author.id)) {
+            return message.channel.sendMessage("**Aww look, you have achieved comedy. No.**").queue()
+        } else if (args.size < command.minArgs) {
+            return message.channel.sendMessage("**Usage:** ${command.usage}").queue()
+        }
+
         else command.onCommand(CommandEvent(
             message.jda,
             message.channel,
