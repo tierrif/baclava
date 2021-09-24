@@ -9,7 +9,7 @@ import javax.script.ScriptContext
 import javax.script.ScriptEngineManager
 
 private val IMPORTS = listOf(
-    "io.github.hotlava03.baclava.bot.ai.*",
+    "io.github.hotlava03.baclava.ai.*",
     "io.github.hotlava03.baclava.bot.commands.*",
     "io.github.hotlava03.baclava.config.*",
     "io.github.hotlava03.baclava.util.*",

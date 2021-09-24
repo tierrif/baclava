@@ -1,6 +1,7 @@
 package io.github.hotlava03.baclava.dashboard.api.entities
 
-import java.util.*
+import org.springframework.data.redis.core.RedisHash
+import java.io.Serializable
 
 /**
  * Enum to distinguish the bot from
@@ -15,17 +16,22 @@ enum class MessageSender { USER, BOT }
 data class Message(
     val sender: MessageSender,
     val content: String,
-    val timestamp: Date,
+    var timestamp: Long?,
 )
 
 /**
  * What is sent to the client when all messages
  * are requested.
+ *
+ * Also serves as a model for the Redis database.
  */
+@RedisHash("MessageBundle")
 data class MessageBundle(
-    val messages: Array<Message>,
-    val user: User,
-) {
+    var messages: Array<Message>,
+    var user: User,
+) : Serializable {
+    var id = user.id
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

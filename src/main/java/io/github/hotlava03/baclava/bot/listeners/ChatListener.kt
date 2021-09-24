@@ -1,11 +1,12 @@
 package io.github.hotlava03.baclava.bot.listeners
 
-import io.github.hotlava03.baclava.bot.ai.cleverbot
+import io.github.hotlava03.baclava.ai.cleverbot
 import io.github.hotlava03.baclava.bot.commands.Command
 import io.github.hotlava03.baclava.bot.commands.CommandEvent
 import io.github.hotlava03.baclava.bot.commands.CommandHandler
 import io.github.hotlava03.baclava.botId
 import io.github.hotlava03.baclava.config.ConfigHandler
+import io.github.hotlava03.baclava.dashboard.api.entities.User
 import io.github.hotlava03.baclava.dashboard.functions.getLogger
 import io.github.hotlava03.baclava.util.simplifyMessage
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +16,6 @@ import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
-import net.dv8tion.jda.api.exceptions.ContextException
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import kotlin.coroutines.CoroutineContext
 
@@ -43,8 +43,8 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
             launch {
                 val response = cleverbot(
                     message.contentRaw.replace(mentionRegex, "").substring(1),
-                    message.author.id
-                ) ?: return@launch message.channel.sendMessage("my brain died, say that again").queue()
+                    User.fromJdaUser(message.author)
+                ) ?: return@launch message.channel.sendMessage(ConfigHandler.config.aiFailureMessage).queue()
 
                 message.channel.sendMessage(simplifyMessage(response)).queue()
             }

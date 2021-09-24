@@ -8,5 +8,10 @@ class Config(
     val owners: Array<String>,
     val clientSecret: String,
     val clientId: String,
+    val redisHostName: String,
+    val redisPort: Int,
+    val redisDatabase: Int,
+    val redisPassword: String,
+    val aiFailureMessage: String
 )
 

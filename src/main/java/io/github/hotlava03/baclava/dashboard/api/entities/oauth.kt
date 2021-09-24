@@ -27,8 +27,17 @@ data class User(
     val id: String,
     val username: String,
     val discriminator: String,
-    val avatar: String?,
-)
+    var avatar: String?,
+) {
+    companion object {
+        fun fromJdaUser(user: net.dv8tion.jda.api.entities.User) = User(
+            user.id,
+            user.name,
+            user.discriminator,
+            user.avatarUrl,
+        )
+    }
+}
 
 /**
  * Response object from Discord when
@@ -39,7 +48,7 @@ data class CurrentAuthInformation(
     val application: Application,
     val scopes: Array<String>,
     val expires: Date,
-    val user: User?
+    var user: User?
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

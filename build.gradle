@@ -26,7 +26,9 @@ dependencies {
     }
     implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.5.4'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
+    implementation 'org.springframework.data:spring-data-redis:2.5.5'
     implementation 'org.springframework.session:spring-session-core:2.5.2'
+    implementation 'redis.clients:jedis:3.7.0'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'org.jetbrains.kotlin:kotlin-scripting-jsr223:1.5.30'
     implementation 'net.java.dev.jna:jna:5.9.0'

@@ -7,6 +7,7 @@ import io.github.hotlava03.baclava.dashboard.api.entities.OAuthResponseData
 import io.github.hotlava03.baclava.dashboard.api.entities.User
 import io.github.hotlava03.baclava.dashboard.auth.AuthHandler
 import io.github.hotlava03.baclava.dashboard.functions.baseUri
+import io.github.hotlava03.baclava.util.avatarHashToUrl
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -19,12 +20,12 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
+@RestController
 class AuthController {
     private val redirect = baseUri("auth/callback")
 
@@ -92,7 +93,11 @@ class AuthController {
                 return@runBlocking ResponseEntity.badRequest().body(entity)
             }
 
-            AuthHandler[entity.access_token] = currentInfo.user
+            val user = currentInfo.user!!
+
+            if (user.avatar != null) user.avatar = avatarHashToUrl(user.avatar!!, user.id)
+
+            AuthHandler[entity.access_token] = user
             return@runBlocking ResponseEntity.ok(entity)
         }
     }

@@ -1,4 +1,4 @@
-package io.github.hotlava03.baclava.bot.ai
+package io.github.hotlava03.baclava.ai
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -42,7 +42,7 @@ internal class CleverBotWrapper(private val userData: UserData) : CoroutineScope
      *
      * @return CleverBot's response or null if an error has occurred.
      */
-    suspend fun makeRequest(stimulus: String, userId: String, context: List<String> = listOf()): String? {
+    suspend fun makeRequest(stimulus: String, context: List<String> = listOf()): String? {
         // Verify if cookies are initialized.
         if (!::cookies.isInitialized) {
             // Retrieve the XVIS cookie which is necessary to perform requests.
@@ -110,7 +110,6 @@ internal class CleverBotWrapper(private val userData: UserData) : CoroutineScope
 
                 cbsid = res.split("\r")[1]
                 val response = URLDecoder.decode(res.split("\r")[0], Charset.defaultCharset())
-                userData.pushContext(userId, response)
                 return response
             } catch (e: Exception) {
                 // Retry after a second.
