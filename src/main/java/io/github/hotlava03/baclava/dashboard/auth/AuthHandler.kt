@@ -11,9 +11,7 @@ object AuthHandler {
      * @param token The token for this session.
      * @return The username of the session holder.
      */
-    operator fun get(token: String): User? {
-        return sessions[token]
-    }
+    operator fun get(token: String) = sessions[token]
 
     /**
      * Set a session.
@@ -21,7 +19,12 @@ object AuthHandler {
      * @param token The session token.
      * @param session The user's ID.
      */
-    operator fun set(token: String, session: User) {
-        sessions[token] = session
-    }
+    operator fun set(token: String, session: User) { sessions[token] = session }
+
+    /**
+     * Remove a session.
+     *
+     * @param token The session token to remove.
+     */
+    fun delete(token: String) { sessions.remove(token) }
 }

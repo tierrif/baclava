@@ -6,18 +6,28 @@ import config from '../config.json'
 
 const Dashboard: NextPage = () => {
   const router = useRouter()
-  const [messages, setMessages] = useState([])
+  const [state, setState] = useState({})
 
   useEffect(() => {
-    if ((localStorage.getItem('baclava-token')) === null) {
-      void router.push('/')
-      return
+    let token = localStorage.getItem('baclava-token')
+    if (token === null) {
+      const params = new URLSearchParams(window.location.search)
+      token = params.get('token')
+      if (token !== null) localStorage.setItem('baclava-token', token)
+      else {
+        // void router.push('/')
+        return
+      }
     }
 
-    fetch(`${config.baseUri}auth`)
-      .then((res) => res.json())
-      .then((user) => {
+    // Remove any query params.
+    void router.push(router.asPath.split('?')[0])
 
+    void fetch(`${config.baseUri}messages`, { headers: { Authorization: token } })
+      .then(async (res) => await res.json())
+      .catch(console.log)
+      .then((bundle) => {
+        setState(bundle)
       })
   }, [])
 

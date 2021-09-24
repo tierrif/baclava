@@ -6,6 +6,7 @@ import io.github.hotlava03.baclava.dashboard.auth.AuthHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 
@@ -15,6 +16,7 @@ class MessagesController {
     private lateinit var messageRepository: MessageRepository
 
     @GetMapping("/messages")
+    @CrossOrigin
     fun index(@RequestHeader(required = true) authorization: String): ResponseEntity<MessageBundle> {
         val user = AuthHandler[authorization] ?: return ResponseEntity.status(403).build()
         val bundle = messageRepository.findById(user.id)

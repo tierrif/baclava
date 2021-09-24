@@ -12,6 +12,7 @@ class Config(
     val redisPort: Int,
     val redisDatabase: Int,
     val redisPassword: String,
-    val aiFailureMessage: String
+    val aiFailureMessage: String,
+    val frontendUri: String,
 )
 

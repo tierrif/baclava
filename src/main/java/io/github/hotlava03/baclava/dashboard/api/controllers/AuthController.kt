@@ -20,10 +20,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import org.springframework.web.servlet.view.RedirectView
 
 @RestController
 class AuthController {
@@ -52,6 +51,7 @@ class AuthController {
      * is, the username will be given.
      */
     @GetMapping("/auth")
+    @CrossOrigin
     fun index(@RequestHeader(required = true) authorization: String): ResponseEntity<User?> {
         val user = AuthHandler[authorization] ?: return ResponseEntity.badRequest().body(null)
         return ResponseEntity.ok(user)
@@ -63,7 +63,8 @@ class AuthController {
      * process.
      */
     @GetMapping("/auth/callback")
-    fun callback(@RequestParam code: String): ResponseEntity<OAuthResponseData> {
+    @CrossOrigin
+    fun callback(@RequestParam code: String, attributes: RedirectAttributes): RedirectView? {
         println(ContentType.Application.FormUrlEncoded.toString())
         return runBlocking {
             // Create a request to Discord.
@@ -90,7 +91,7 @@ class AuthController {
             val currentInfo = gson.fromJson(str, CurrentAuthInformation::class.java)
             if (currentInfo.user == null) {
                 entity.access_token = ""
-                return@runBlocking ResponseEntity.badRequest().body(entity)
+                return@runBlocking null
             }
 
             val user = currentInfo.user!!
@@ -98,7 +99,8 @@ class AuthController {
             if (user.avatar != null) user.avatar = avatarHashToUrl(user.avatar!!, user.id)
 
             AuthHandler[entity.access_token] = user
-            return@runBlocking ResponseEntity.ok(entity)
+            attributes.addAttribute("token", entity.access_token)
+            return@runBlocking RedirectView("${ConfigHandler.config.frontendUri}/dashboard")
         }
     }
 }
