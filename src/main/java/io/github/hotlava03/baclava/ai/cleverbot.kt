@@ -9,6 +9,9 @@ private val wrapper = CleverBotWrapper(userData)
 
 suspend fun cleverbot(stimulus: String, user: User): String? {
     val response = wrapper.makeRequest(stimulus, userData.userContext(user))
-    if (response != null) userData.pushContext(user, response)
+    if (response != null) {
+        userData.pushContext(user, response)
+        userData.registerUserMessage(user.id, stimulus)
+    }
     return response
 }

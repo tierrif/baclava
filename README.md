@@ -15,15 +15,24 @@ You will need a `config.json` file in the same directory level as the jar file y
 
 ```json
 {
-  "baseUri": "http(s)://localhost:port/",
+  "baseUri": "http://localhost:8080/",
   "prefix": ">>",
-  "conversationTimeout": 600000
+  "conversationTimeout": 600000,
+  "owners": ["362753440801095681"],
+  "baclavaColor": "#ff8400",
+  "clientSecret": "<your app's client secret>",
+  "clientId": "<your app's client id>",
+  "redisHostName": "localhost",
+  "redisPort": 6379,
+  "redisDatabase": 0,
+  "redisPassword": "",
+  "aiFailureMessage": "my brain died, say that again"
 }
 ```
 
 `conversationTimeout` is the timeout in milliseconds (default is 10 minutes) to expire a conversation's context. This means that when 10 minutes pass, the context of previous conversations will be reset.
 
-**Important**: The `baseUrl` must include a `/` in the end. Make sure you have the correct protocol and port.
+**Important**: The `baseUri` must include a `/` in the end. Make sure you have the correct protocol and port.
 
 Then, you'll need to set 2 environment variables. First, `TOKEN`, with the bot's token, and second `CLIENT_SECRET`, which holds the client secret of the bot. This is for OAuth2, which isn't required by bots usually, but by other types of application. OAuth2 is used for logging into the dashboard.
 

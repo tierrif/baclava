@@ -5,6 +5,7 @@ import io.github.hotlava03.baclava.config.ConfigHandler
 import io.github.hotlava03.baclava.dashboard.api.entities.Message
 import io.github.hotlava03.baclava.dashboard.api.entities.MessageSender
 import io.github.hotlava03.baclava.dashboard.auth.AuthHandler
+import io.github.hotlava03.baclava.util.simplifyMessage
 import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,9 +23,9 @@ class AIController {
         val user = AuthHandler[authorization]
             ?: return ResponseEntity.status(403).body(null)
 
-        val botMessageStr = runBlocking {
+        val botMessageStr = simplifyMessage(runBlocking {
             return@runBlocking cleverbot(message.content, user) ?: ConfigHandler.config.aiFailureMessage
-        }
+        })
 
         val botMessage = Message(MessageSender.BOT, botMessageStr, System.currentTimeMillis())
 

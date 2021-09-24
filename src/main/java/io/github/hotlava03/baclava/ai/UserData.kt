@@ -25,7 +25,18 @@ open class UserData(private val timeout: Long) {
             bundle = MessageBundle(arrayOf(), user)
         }
 
-        return bundle.messages.map { it.content }
+        return bundle.messages.filter { it.sender == MessageSender.BOT }.map { it.content }
+    }
+
+    fun registerUserMessage(userId: String, message: String) {
+        val bundle = messageRepository.findById(userId).get()
+        bundle.messages = arrayOf(*bundle.messages, Message(
+            sender = MessageSender.USER,
+            content = message,
+            timestamp = System.currentTimeMillis(),
+        ))
+
+        messageRepository.save(bundle)
     }
 
     fun pushContext(user: User, message: String) {
