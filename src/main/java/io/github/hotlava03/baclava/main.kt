@@ -34,3 +34,11 @@ fun main(args: Array<String>) {
 fun eventListeners(): List<ListenerAdapter> = listOf(
     ChatListener()
 )
+
+/**
+ * TODO: Add redis support.
+ *       Add /ai endpoint to dashboard backend.
+ *       Make basic layout for dashboard front-end.
+ *       Add essential commands.
+ *       Add reply support in mentions (cleverbot).
+ */
