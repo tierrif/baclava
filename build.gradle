@@ -16,12 +16,15 @@ targetCompatibility = JavaVersion.VERSION_11
 sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
-    jcenter()
     mavenCentral()
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
 }
 
 dependencies {
-    implementation('net.dv8tion:JDA:4.2.0_216') {
+    implementation('net.dv8tion:JDA:4.3.0_331') {
         exclude module: 'opus-java'
     }
     implementation 'org.springframework.boot:spring-boot-starter-data-rest:2.5.4'

@@ -1,5 +1,6 @@
 package io.github.hotlava03.baclava.bot.commands
 
+import io.github.hotlava03.baclava.bot.commands.`fun`.TicTacToe
 import io.github.hotlava03.baclava.bot.commands.basic.*
 import io.github.hotlava03.baclava.bot.commands.owner.*
 import io.github.hotlava03.baclava.bot.commands.utility.Color
@@ -10,6 +11,7 @@ class CommandHandler {
         "help" to Help(this),
         "ping" to Ping(),
         "color" to Color(),
+        "tictactoe" to TicTacToe(),
     )
 
     operator fun get(name: String): Command? {

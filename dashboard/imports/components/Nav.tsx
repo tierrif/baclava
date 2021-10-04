@@ -1,13 +1,18 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { NavProps } from '../types'
 import config from '../../config.json'
+import { useRouter } from 'next/router'
 
 const Nav = ({ active }: NavProps) => {
+  const router = useRouter()
+
   const handleLogout = async () => {
     const token = localStorage.getItem('baclava-token')
+    console.log(token)
     if (token === null) return
     await fetch(`${config.baseUri}logout`, { headers: { Authorization: token } })
     localStorage.clear()
+    await router.push('/')
   }
 
   const handleLogin = async () => {

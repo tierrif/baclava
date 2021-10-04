@@ -15,15 +15,15 @@ const Dashboard: NextPage = () => {
       token = params.get('token')
       if (token !== null) localStorage.setItem('baclava-token', token)
       else {
-        // void router.push('/')
+        router.push('/')
         return
       }
     }
 
     // Remove any query params.
-    void router.push(router.asPath.split('?')[0])
+    router.push(router.asPath.split('?')[0])
 
-    void fetch(`${config.baseUri}messages`, { headers: { Authorization: token } })
+    fetch(`${config.baseUri}messages`, { headers: { Authorization: token } })
       .then(async (res) => await res.json())
       .catch(console.log)
       .then((bundle) => {
