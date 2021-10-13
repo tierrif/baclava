@@ -2,8 +2,7 @@ import type { NextPage } from 'next'
 import Nav from '../imports/components/Nav'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import config from '../config.json'
-
+import config from '../../../../frontendConfig.json'
 const Dashboard: NextPage = () => {
   const router = useRouter()
   const [state, setState] = useState({})

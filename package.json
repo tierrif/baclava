@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev ./src/main/typescript",
+    "build": "next build ./src/main/typescript",
+    "start": "next start ./src/main/typescript",
+    "lint": "next lint ./src/main/typescript"
   },
   "dependencies": {
     "@emotion/react": "^11.4.1",

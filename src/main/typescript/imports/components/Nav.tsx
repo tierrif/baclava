@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 import { NavProps } from '../types'
-import config from '../../config.json'
+import config from '../../../../../frontendConfig.json'
 import { useRouter } from 'next/router'
 
 const Nav = ({ active }: NavProps) => {
@@ -16,7 +16,8 @@ const Nav = ({ active }: NavProps) => {
   }
 
   const handleLogin = async () => {
-    window.location.href = await fetch(`${config.baseUri}login`).then(async (res) => await res.text())
+    window.location.href = await fetch(`${config.baseUri}login`)
+      .then(async (res) => await res.text())
   }
 
   return (
