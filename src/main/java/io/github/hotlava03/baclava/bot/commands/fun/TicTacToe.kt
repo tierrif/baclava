@@ -17,16 +17,15 @@ class TicTacToe : Command() {
     }
 
     override fun onCommand(e: CommandEvent) {
-        /*if (e.message.mentionedUsers.isEmpty()) return e.reply("**Please mention someone to play with.**")
+        if (e.message.mentionedUsers.isEmpty()) return e.reply("**Please mention someone to play with.**")
         else if (e.message.mentionedUsers[0].isBot) return e.reply("**Why are you trying to play against a bot?**")
-
+        // else if (e.message.mentionedUsers[0].id == e.author.id) return e.reply("**Are you that lonely to play against yourself?**")
         val opponent = e.message.mentionedUsers[0]
         // Whether the author of the message is who starts.
-        val userWhoStarts = if (Random.nextBoolean()) e.author else opponent)*/
+        val userWhoStarts = if (Random.nextBoolean()) e.author else opponent
 
         // Create the message.
-        // val message = e.channel.sendMessage("**${e.author.name}** // **${e.message.mentionedUsers[0].name}**")
-        val message = e.channel.sendMessage("**${e.author.name}** // **ur mom**")
+        val message = e.channel.sendMessage("**${e.author.name}** // **${e.message.mentionedUsers[0].name}**")
 
         // Create the button layout.
         val layout: Array<ActionRow?> = arrayOfNulls(3)
@@ -34,7 +33,10 @@ class TicTacToe : Command() {
         // Populate the layout.
         layout.forEachIndexed { i, _ ->
             var row = arrayOf<Button>()
-            for (j in 0..2) row += Button.secondary("$i:$j", " ")
+            for (j in 0..2) row += Button.secondary(
+                "ttt::${userWhoStarts.id}:${opponent.id}::$i:$j",
+                " "
+            )
 
             layout[i] = ActionRow.of(*row)
         }

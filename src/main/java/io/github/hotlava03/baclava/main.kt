@@ -9,7 +9,8 @@
 package io.github.hotlava03.baclava
 
 import io.github.hotlava03.baclava.bot.listeners.ChatListener
-import io.github.hotlava03.baclava.bot.listeners.TicTacToeListener
+import io.github.hotlava03.baclava.bot.listeners.tictactoe.TicTacToeListener
+import io.github.hotlava03.baclava.bot.listeners.tictactoe.TicTacToePlayers
 import io.github.hotlava03.baclava.dashboard.DashboardApplication
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.apache.logging.log4j.LogManager
@@ -28,6 +29,7 @@ fun main(args: Array<String>) {
     startBot(System.getenv("TOKEN")) {
         // Done.
         botId = it.jda.selfUser.id
+        TicTacToePlayers.init(it.jda)
         logger.info("JDA is ready.")
     }
 }

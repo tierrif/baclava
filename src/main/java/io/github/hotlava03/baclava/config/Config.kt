@@ -14,5 +14,6 @@ class Config(
     val redisPassword: String,
     val aiFailureMessage: String,
     val frontendUri: String,
+    val ticTacToeTimeout: Long,
 )
 
