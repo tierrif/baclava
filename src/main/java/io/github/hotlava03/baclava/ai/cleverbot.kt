@@ -8,7 +8,10 @@ private val userData = UserData(ConfigHandler.config.conversationTimeout)
 private val wrapper = CleverBotWrapper(userData)
 
 suspend fun cleverbot(stimulus: String, user: User): String? {
-    val response = wrapper.makeRequest(stimulus, userData.userContext(user))
+    val ctx = userData.userContext(user)
+    if (ctx === null) return "**Fatal: Cannot connect to Redis.**"
+
+    val response = wrapper.makeRequest(stimulus, ctx)
     if (response != null) {
         userData.pushContext(user, response)
         userData.registerUserMessage(user.id, stimulus)

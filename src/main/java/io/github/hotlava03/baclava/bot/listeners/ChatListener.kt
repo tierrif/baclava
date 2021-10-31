@@ -24,6 +24,8 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
+    // Storage containing last message from AI chat per-user (userId => msgId).
+    private val lastMessages: MutableMap<String, String> = HashMap()
 
     private lateinit var mentionRegex: Regex
     private val commandHandler = CommandHandler()
@@ -35,10 +37,14 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
     }
 
     private fun checkMessage(message: Message) {
-        if (!::mentionRegex.isInitialized) mentionRegex = "^<@(!?)${botId}>".toRegex()
+        if (!::mentionRegex.isInitialized) mentionRegex = "^<@(!?)${botId}> ".toRegex()
+        if (message.author.isBot) return
+
+        val reply = message.referencedMessage?.id
+        val lastMessage = lastMessages[message.author.id]
 
         // Handle AI.
-        if (message.contentRaw.contains(mentionRegex)) {
+        if (message.contentRaw.contains(mentionRegex) || reply == lastMessage) {
             message.channel.sendTyping().queue()
             launch {
                 val response = cleverbot(
@@ -46,9 +52,16 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
                     User.fromJdaUser(message.author)
                 ) ?: return@launch message.channel.sendMessage(ConfigHandler.config.aiFailureMessage).queue()
 
-                message.channel.sendMessage(simplifyMessage(response)).queue()
+                message.reply(simplifyMessage(response)).queue {
+                    lastMessages[message.author.id] = it.id
+                }
             }
 
+            return
+        } else if (reply !== null && message.referencedMessage?.author?.id == ConfigHandler.config.clientId) {
+            // It's an invalid reply.
+            message.reply("**Invalid reply. " +
+                    "Replying only works on my latest sent message to you.**").queue()
             return
         }
 
@@ -83,7 +96,7 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
                 message,
                 message.author,
                 message.member,
-                args
+                args,
             )
         )
     }

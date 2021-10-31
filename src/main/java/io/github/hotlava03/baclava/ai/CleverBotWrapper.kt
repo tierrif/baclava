@@ -109,8 +109,7 @@ internal class CleverBotWrapper(private val userData: UserData) : CoroutineScope
                 }
 
                 cbsid = res.split("\r")[1]
-                val response = URLDecoder.decode(res.split("\r")[0], Charset.defaultCharset())
-                return response
+                return URLDecoder.decode(res.split("\r")[0], Charset.defaultCharset())
             } catch (e: Exception) {
                 // Retry after a second.
                 delay(1000)

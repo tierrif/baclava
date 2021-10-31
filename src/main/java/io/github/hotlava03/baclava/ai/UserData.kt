@@ -7,13 +7,22 @@ import io.github.hotlava03.baclava.dashboard.api.entities.User
 import io.github.hotlava03.baclava.dashboard.api.redis.MessageRepository
 import io.github.hotlava03.baclava.dashboard.getBean
 import io.ktor.util.date.*
+import org.springframework.data.redis.RedisConnectionFailureException
 
 open class UserData(private val timeout: Long) {
     private val messageRepository: MessageRepository = getBean(MessageRepository::class.java)
 
-    fun userContext(user: User): List<String> {
+    fun userContext(user: User): List<String>? {
         // Get the user context for this user.
-        var bundle = messageRepository.findById(user.id).orElse(MessageBundle(arrayOf(), user))
+        var bundle: MessageBundle? = null
+        // Check if Redis' connection is successful.
+        try {
+            bundle = messageRepository.findById(user.id).orElse(MessageBundle(arrayOf(), user))
+        } catch (e: RedisConnectionFailureException) {
+            e.printStackTrace()
+        }
+
+        if (bundle === null) return null
 
         // Get the previous conversation's timestamp.
         val now = getTimeMillis()
