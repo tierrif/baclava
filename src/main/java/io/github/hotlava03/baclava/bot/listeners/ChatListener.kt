@@ -44,7 +44,7 @@ class ChatListener : ListenerAdapter(), CoroutineScope {
         val lastMessage = lastMessages[message.author.id]
 
         // Handle AI.
-        if (message.contentRaw.contains(mentionRegex) || reply == lastMessage) {
+        if (message.contentRaw.contains(mentionRegex) || (reply == lastMessage && reply !== null)) {
             message.channel.sendTyping().queue()
             launch {
                 val response = cleverbot(
