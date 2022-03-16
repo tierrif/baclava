@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'io.github.hotlava03'
-version '2.0.0-CANARY'
+version '2.0.1-BETA'
 mainClassName = 'io.github.hotlava03.baclava.Main'
 compileJava.options.encoding = 'UTF-8'
 
